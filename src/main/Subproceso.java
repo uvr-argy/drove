@@ -7,15 +7,17 @@ import java.io.InputStreamReader;
 
 public class Subproceso {
 	public static Process lanzar(String nombre, String ... args) {
-		System.out.println(System.getProperty("user.dir"));
-		String cmd = "java -cp " + nombre + " ";
+		
+		String classpath = System.getProperty("java.class.path");
+		String cmd = "java -cp " + classpath + " " + nombre + " ";
 		for (int i = 0; i < args.length; i++) {
 			cmd += args[i];
 			cmd += " ";
 		}
-		System.out.println(cmd);
+
 		ProcessBuilder p = new ProcessBuilder(cmd.split(" ", -1));
-		p.directory(new File("./"));
+
+		p.redirectErrorStream(true);
 		try {
 			return p.start();
 		} catch (IOException e) {
@@ -25,31 +27,25 @@ public class Subproceso {
 	}
 	
 	public static String leerResultado(Process p) {
-		//System.out.println("Mostrando resultado:");
 		String str = "";
-		try {
-			Runtime r = Runtime.getRuntime();
-			BufferedReader br = new BufferedReader(new InputStreamReader(p.getInputStream()));
-			p.waitFor();
-			String line = "";
-			
-			while ((line = br.readLine()) != null) {
-				str += line;
-				str += "\n";
+		
+		try (BufferedReader br = new BufferedReader(new InputStreamReader(p.getInputStream()))) {
+			String line;
+			while ((line = br.readLine()) != null) {				
+				str += (line + "\n");
 			}
-			br = new BufferedReader(new InputStreamReader(p.getErrorStream()));
-			
-			line = "";
-			while ((line = br.readLine()) != null) {
-				System.err.println(line);
-			}
+			return str;
 		} catch (IOException e) {
 			e.printStackTrace();
 			return "";
-		} catch (InterruptedException e) {
-			e.printStackTrace();
-			return "";
 		}
-		return str;
+	}
+	
+	public static void esperar(Process p) {
+		try {
+			p.waitFor();
+		} catch (InterruptedException e) {
+			return;
+		}
 	}
 }

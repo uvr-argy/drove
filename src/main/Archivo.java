@@ -7,7 +7,7 @@ import java.nio.file.Paths;
 
 public class Archivo {
 
-    public String volcarArchivoDeTexto(String nombreArchivo) {
+    public static String leer(String nombreArchivo) {
         try {
             Path ruta = Paths.get(nombreArchivo);
             return Files.readString(ruta);
@@ -18,7 +18,7 @@ public class Archivo {
     }
 
    
-    public void escribirArchivoDeTexto(String nombreArchivo, String contenido) {
+    public static void escribir(String nombreArchivo, String contenido) {
         try {
             Path ruta = Paths.get(nombreArchivo);
             Files.writeString(ruta, contenido);
@@ -27,19 +27,19 @@ public class Archivo {
         }
     }
 
-    public boolean comprobarQueUnArchivoExiste(String nombreArchivo) {
+    public static boolean existe(String nombreArchivo) {
         Path ruta = Paths.get(nombreArchivo);
         return Files.exists(ruta);
     }
 
 
-    public String[] convertirCsvAArray(String nombreArchivo, String separador) {
-        if (!comprobarQueUnArchivoExiste(nombreArchivo)) {
+    public static String[] toArray(String nombreArchivo, String separador) {
+        if (!existe(nombreArchivo)) {
             System.err.println("El archivo CSV no existe en la ruta indicada.");
             return new String[0];
         }
 
-        String contenidoCsv = volcarArchivoDeTexto(nombreArchivo);
+        String contenidoCsv = leer(nombreArchivo);
 
         String textoPlano = contenidoCsv.replace("\r\n", separador).replace("\n", separador);
 
@@ -47,8 +47,8 @@ public class Archivo {
     }
 
     
-    public void calcularEstadisticasCsv(String nombreArchivo) {
-        String[] valoresString = convertirCsvAArray(nombreArchivo, ";");
+    public static void calcularEstadisticas(String nombreArchivo) {
+        String[] valoresString = toArray(nombreArchivo, ";");
 
         if (valoresString.length == 0) {
             return; 
