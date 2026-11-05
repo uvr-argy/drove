@@ -7,7 +7,7 @@ import java.nio.file.Paths;
 
 public class Archivo {
 
-    public String volcarArchivoDeTexto(String nombreArchivo) {
+    public String volcar(String nombreArchivo) {
         try {
             Path ruta = Paths.get(nombreArchivo);
             return Files.readString(ruta);
@@ -17,8 +17,7 @@ public class Archivo {
         }
     }
 
-   
-    public void escribirArchivoDeTexto(String nombreArchivo, String contenido) {
+    public void escribir(String nombreArchivo, String contenido) {
         try {
             Path ruta = Paths.get(nombreArchivo);
             Files.writeString(ruta, contenido);
@@ -27,7 +26,7 @@ public class Archivo {
         }
     }
 
-    public boolean comprobarQueUnArchivoExiste(String nombreArchivo) {
+    public boolean existe(String nombreArchivo) {
         Path ruta = Paths.get(nombreArchivo);
         return Files.exists(ruta);
     }
