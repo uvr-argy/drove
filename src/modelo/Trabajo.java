@@ -1,8 +1,6 @@
 package modelo;
 
 import java.util.Arrays;
-import java.util.List;
-import java.util.concurrent.Semaphore;
 
 import main.*;
 import excepciones.*;
@@ -84,7 +82,6 @@ public class Trabajo {
 	public double getDuracion() {
 		return duracion;
 	}
-
 	public void setDuracion(double duracion) {
 		this.duracion = duracion;
 	}

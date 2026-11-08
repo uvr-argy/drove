@@ -6,18 +6,54 @@ import java.util.concurrent.ArrayBlockingQueue;
 import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
+import java.util.concurrent.Semaphore;
+import java.util.concurrent.TimeUnit;
 
 public class Main {
 	public static final int TRABAJOS_PENDIENTES = 20;
 	public static final int HILOS_TRABAJADORES = 4;
+	public static final int PROCESOS_ACTIVOS = 2;
 	
 	public static void main(String[] args) {
 		//crear lista con todos los trabajos validados
-		List<Trabajo> lista = ListaTrabajo.parseCsv(Archivo.leer("files/main.csv"));
+		List<Trabajo> lista = ListaTrabajo.parseCsv(Archivo.leer("files/150.csv"));
 		
 		BlockingQueue<Trabajo> cola = new ArrayBlockingQueue<>(TRABAJOS_PENDIENTES); //lista limitada a 20 trabajos pendientes
 		ExecutorService trabajadores = Executors.newFixedThreadPool(HILOS_TRABAJADORES); //uso de 4 hilos trabajadores
+		Semaphore semaphore = new Semaphore(PROCESOS_ACTIVOS);
 		
-		Thread productor = new Thread(() -> HiloProductor.ejecutar(lista, cola));
+		Thread productor = new Thread(() -> {
+			HiloProductor.ejecutar(lista, cola); //ir añadiendo constantemente elementos a la cola
+		});
+		productor.start();
+		for (int i = 0; i < HILOS_TRABAJADORES; i++) {
+			trabajadores.submit(() -> {
+				try {
+					System.out.println("Hilo ejecutor iniciado.");
+					while (true) {
+						Trabajo t = cola.take();
+						
+						if (t.getEstado() != Trabajo.Estado.EN_COLA) //si no está en cola, ya ha terminado
+							break;
+						HiloTrabajador.ejecutar(t, trabajadores, semaphore);
+					}
+					System.out.println("Hilo ejecutor finalizado.");
+				} catch (InterruptedException e) {
+					e.printStackTrace();
+					Thread.currentThread().interrupt();
+				}
+			});
+		}
+		try {			
+			productor.join();
+			trabajadores.shutdown();
+			if (!trabajadores.awaitTermination(2, TimeUnit.SECONDS)) {
+				trabajadores.shutdownNow();
+			}
+		} catch (InterruptedException e) {
+			
+		}		
+		System.out.println("\n--------Wii did it!------------");
+		return;
 	}
 }

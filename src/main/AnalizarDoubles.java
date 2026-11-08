@@ -1,7 +1,5 @@
 package main;
 
-import java.io.IOException;
-
 public class AnalizarDoubles {
 	public static double[] parseDoubles(String[] str) {
 		double[] res = new double[str.length];
@@ -71,7 +69,7 @@ public class AnalizarDoubles {
 	
 	private static boolean valido(String str) {
 		try {
-			double b = Double.parseDouble(str);
+			Double.parseDouble(str);
 			return true;
 		} catch (NumberFormatException e) {
 			return false;

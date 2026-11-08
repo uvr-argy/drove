@@ -18,6 +18,8 @@ public class ListaTrabajo {
 		for (int i = 0; i < lineas.length; i++) {
 			Trabajo t;
 			String linea = lineas[i];
+			if (linea.length() < 2)
+				continue;
 			
 			try {
 				t = TrabajoCsvMapper.toClass(linea);
