@@ -1,0 +1,5 @@
+Segundo archivo de texto para la prueba de búsqueda.
+Aquí repetiremos el término clave "automatización" varias veces:
+Primera aparición de automatización.
+Segunda aparición de automatización en este mismo documento.
+Fin del segundo archivo.

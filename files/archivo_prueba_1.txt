@@ -1,0 +1,4 @@
+Hola mundo. Este es el primer archivo de prueba para las operaciones de texto.
+Contiene múltiples líneas, palabras variadas y algunos caracteres especiales (como acentos: á, é, í, ó, ú, y la letra ñ).
+El término clave que vamos a buscar aquí es "automatización", el cual aparece una vez en este párrafo.
+¡Esperamos que el sistema funcione correctamente!

@@ -7,27 +7,26 @@ import java.nio.file.Paths;
 
 public class Archivo {
 
-    public static String leer(String nombreArchivo) {
+    public static synchronized String leer(String nombreArchivo) {
         try {
             Path ruta = Paths.get(nombreArchivo);
             return Files.readString(ruta);
         } catch (IOException e) {
-            System.err.println("Error al leer el archivo: " + e.getMessage());
-            return ""; 
+            return null; 
         }
     }
 
    
-    public static void escribir(String nombreArchivo, String contenido) {
+    public static synchronized void escribir(String nombreArchivo, String contenido) {
         try {
             Path ruta = Paths.get(nombreArchivo);
             Files.writeString(ruta, contenido);
         } catch (IOException e) {
-            System.err.println("Error al escribir en el archivo: " + e.getMessage());
+            //System.err.println("Error al escribir en el archivo: " + e.getMessage());
         }
     }
 
-    public static boolean existe(String nombreArchivo) {
+    public static synchronized boolean existe(String nombreArchivo) {
         Path ruta = Paths.get(nombreArchivo);
         return Files.exists(ruta);
     }

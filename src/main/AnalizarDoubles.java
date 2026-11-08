@@ -16,8 +16,9 @@ public class AnalizarDoubles {
 	}
 	
 	public static int contarNoValidos(String[] str) {
-		//depende de la funcion para contar no válidos
-		return 0;
+		int recuento = str.length;
+		recuento -= contarNoValidos(str);
+		return recuento;
 	}
 	
 	public static double promedio(double[] d) {
@@ -56,5 +57,24 @@ public class AnalizarDoubles {
 				max = act;
 		}
 		return max;
+	}
+	
+	public static int contarValidos(String[] str) {
+		int recuento = 0;
+		for (int i = 0; i < str.length; i++) {
+			String texto = str[i];
+			if (valido(texto))
+				recuento++;
+		}
+		return recuento;
+	}
+	
+	private static boolean valido(String str) {
+		try {
+			double b = Double.parseDouble(str);
+			return true;
+		} catch (NumberFormatException e) {
+			return false;
+		}
 	}
 }

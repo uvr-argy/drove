@@ -1,0 +1,8 @@
+id;nombre;valor;estado
+1;Producto A;15.5;activo
+2;Producto B;-5.0;activo
+3;Producto C;20.0;inactivo
+4;Producto D;abc;activo
+5;Producto E;45.2;activo
+6;Producto F;;inactivo
+7;Producto G;30.1;activo
