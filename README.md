@@ -1,73 +1,55 @@
-# 🛠️ Analizador de Texto y Procesador de Archivos (Proyecto Grupal)
+# 🛠️ Drove Task Processor & Data Analyzer
 
-Este proyecto consiste en una biblioteca de utilidades en **Java** diseñada para la manipulación de archivos de texto, análisis de cadenas de caracteres, procesamiento de datos en formato CSV y cálculos estadísticos sobre arreglos numéricos. El desarrollo se divide modularmente en 4 clases lógicas distribuidas entre los miembros del equipo.
-
----
-
-## Reparto del Trabajo y Funciones
-
-### 1. Clase Archivo
-* **Desarrollador:** Iker
-* **Responsabilidad:** Persistencia de datos e interacción con el sistema de archivos.
-* `volcarArchivo(String nombreArchivo) -> String`
-  * Lee el contenido completo de un archivo de texto y lo devuelve como una sola cadena.
-* `escribirArchivo(String nombreArchivo, String contenido) -> void`
-  * Escribe (o sobrescribe) el contenido de texto dentro del archivo indicado.
-* `existeArchivo(String nombreArchivo) -> boolean`
-  * Comprueba de forma segura si un archivo existe en la ruta especificada.
+Sistema multitarea y multihilo desarrollado en **Java** diseñado para el análisis de texto, procesamiento de datos estructurados CSV, cómputo estadístico sobre arreglos decimales y ejecución aislada mediante subprocesos del sistema operativo.
 
 ---
 
-### 2. Clase Analizador de Strings
-* **Desarrollador:** Ibai
-* **Responsabilidad:** Análisis de texto, conteo de componentes y validación de formatos.
-* `contarApariciones(String texto, String subcadena) -> int`
-  * Cuenta cuántas veces se encuentra la subcadena dentro del texto principal.
-* `contarPalabras(String texto) -> int`
-  * Devuelve el número total de palabras detectadas en el texto.
-* `contarLineas(String texto) -> int`
-  * Cuenta la cantidad de líneas o saltos de línea presentes en el cuerpo del texto.
-* `contarCaracteres(String texto) -> int`
-  * Devuelve la longitud total (`length`) de la cadena de caracteres.
-* `esDoubleValido(String texto) -> boolean`
-  * Verifica si la cadena tiene un formato numérico válido para ser convertida a decimal de forma segura.
+## 📁 Estructura del Proyecto
+
+El código está organizado modularmente en 4 paquetes dentro del directorio `src/`:
+src/
+├── excepciones/       # Excepciones personalizadas del sistema (CsvException, OperacionException...)
+├── modelo/            # Entidades de dominio (Trabajo) y mapeadores CSV (TrabajoCsvMapper)
+├── main/              # Lógica multihilo, I/O, parsing numérico y punto de entrada (Main)
+└── subprocesos/       # Módulos independientes ejecutables vía CLI para cómputo aislado
 
 ---
 
-### 3. Clase Procesador CSV
-* **Desarrollador:** Alvaro
-* **Responsabilidad:** Segmentación de estructuras de datos separadas por delimitadores y generación de reportes métricos.
-* `csvToArray(String contenidoCsv, String separador) -> String[]`
-  * Segmenta el contenido plano de un CSV utilizando el carácter delimitador y lo almacena en un arreglo unidimensional.
-* `calcularEstadisticasCsv(String nombreArchivo) -> void`
-  * Lee un archivo CSV y muestra/calcula sus métricas clave: promedio, suma, cantidad de registros, valor mínimo, valor máximo y total de registros no válidos.
+## 🛠️ Distribución de Módulos y Funcionalidad
+
+### 1. Paquete `excepciones`
+* **`CsvException`**: Control de errores en la lectura y mapeo de datos CSV.
+* **`OperacionException`**: Control de fallos durante la ejecución lógica de un trabajo.
+* **`TrabajoInvalidoException`**: Identificación de trabajos que no cumplen los requisitos del dominio.
+
+### 2. Paquete `modelo`
+* **`Trabajo`**: Clase principal que representa la tarea, gestionando su estado (`PENDIENTE`, `EN_COLA`, `EJECUTANDO`, `COMPLETADO`, `FALLIDO`, `CANCELADO`), tipo de operación (`ANALIZAR_TEXTO`, `BUSCAR_TEXTO`, `ESTADISTICAS_CSV`), parámetros y duración.
+* **`TrabajoCsvMapper`**: Mapeador estático (`toClass`) para convertir líneas CSV en instancias validables de `Trabajo`.
+
+### 3. Paquete `main`
+* **`Archivo`**: Lectura/escritura síncrona de ficheros planos mediante Java NIO (`Files`, `Paths`).
+* **`AnalizarDoubles`**: Conversión y operaciones matemáticas sobre arreglos numéricos (`suma`, `promedio`, `min`, `max`, `contarValidos`).
+* **`Base64Wrapper`**: Codificación y decodificación en Base64 UTF-8 para transferencia segura de datos entre procesos.
+* **`Subproceso`**: Lanzador de JVMs secundarias (`ProcessBuilder`) y captura de streams de salida.
+* **`HiloProductor`**: Hilo encargado de volcar trabajos validados a una `BlockingQueue` acotada.
+* **`HiloTrabajador`**: Hilos del pool (`ExecutorService`) encargados de ejecutar las tareas y gestionar la comunicación con subprocesos.
+* **`ListaTrabajo`**: Utilidades para procesar, validar e impedir IDs duplicados en listas de trabajos.
+* **`Main`**: Punto de entrada del programa. Configura el pool de hilos y arranca el flujo Productor-Consumidor.
+
+### 4. Paquete `subprocesos`
+* **`EstadisticasCsv`**: Clase ejecutable independiente invocado por el hilo trabajador. Decodifica el contenido del archivo recibido en Base64 y calcula estadísticas avanzadas en un entorno totalmente aislado.
 
 ---
 
-### 4. Clase Analizador de Doubles
-* **Desarrollador:** Unax
-* **Responsabilidad:** Módulo matemático para la conversión limpia de datos de texto a tipos numéricos y cálculos estadísticos.
-* `convertirAArregloDoubles(String[] registros) -> double[]`
-  * Filtra y transforma los registros de texto válidos en un arreglo de números decimales. *(Depende de `esDoubleValido` de Ibai)*.
-* `contarRegistrosInvalidos(String[] registros) -> int`
-  * Cuenta cuántos elementos de un arreglo de texto no pueden transformarse a número. *(Depende de `esDoubleValido` de Ibai)*.
-* `calcularPromedio(double[] numeros) -> double`
-  * Obtiene el valor medio aritmético del arreglo.
-* `calcularSuma(double[] numeros) -> double`
-  * Devuelve la sumatoria de todos los elementos numéricos.
-* `calcularCantidad(double[] numeros) -> int`
-  * Retorna el conteo total de elementos numéricos en el arreglo.
-* `obtenerMinimo(double[] numeros) -> double`
-  * Busca y devuelve el valor más bajo del arreglo.
-* `obtenerMaximo(double[] numeros) -> double`
-  * Busca y devuelve el valor más alto del arreglo.
+## 🚀 Requisitos e Instalación
 
----
+* **JDK**: Java 17 o superior.
+* **IDE**: Eclipse / IntelliJ IDEA / VS Code o compilación mediante terminal.
 
-## 📄 Memoria del Proyecto
-* **Autor:** Iker
+### Ejecución desde consola:
+```bash
+# Compilar el código fuente
+javac -d bin src/excepciones/*.java src/modelo/*.java src/main/*.java src/subprocesos/*.java
 
----
-
-## Tecnologías Utilizadas
-* **Lenguaje principal:** Java
+# Ejecutar el programa principal
+java -cp bin main.Main
