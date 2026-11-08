@@ -39,11 +39,11 @@ public class HiloTrabajador {
 				//al hacer todo la clase trabajo, la variable de resultado no se utiliza
 				break;
 			case ESTADISTICAS_CSV:
-				System.out.println("[EX - " + t.getId() + "] Iniciando proceso...");
+				//System.out.println("[EX - " + t.getId() + "] Iniciando proceso...");
 				String volcado = Archivo.leer(t.getParametros()[0]);
-				System.out.println(t.getParametros()[0]);
+				//System.out.println(t.getParametros()[0]);
 				if (volcado == null) {
-					System.out.println("[EX - " + t.getId() + "] Archivo no encontrado...");
+					//System.out.println("[EX - " + t.getId() + "] Archivo no encontrado...");
 					t.setEstado(Estado.FALLIDO);
 					t.setResultado("Archivo inexistente");
 				} else {
@@ -51,13 +51,13 @@ public class HiloTrabajador {
 					try {
 						semaphore.acquire();
 						Process proceso = Subproceso.lanzar("subprocesos.EstadisticasCsv", codificado);
-						System.out.println("[EX - " + t.getId() + "] Esperando al proceso...");
+						//System.out.println("[EX - " + t.getId() + "] Esperando al proceso...");
 						proceso.waitFor();					
 						String resultado = Subproceso.leerResultado(proceso);
 						t.setResultado(resultado);
 					} catch (InterruptedException e) {
 						e.printStackTrace();
-						System.out.println("[EX - " + t.getId() + "] Proceso terminado con error");
+						//System.out.println("[EX - " + t.getId() + "] Proceso terminado con error");
 						t.setEstado(Estado.FALLIDO);
 						t.setResultado("Error en el proceso.");
 					}
@@ -65,7 +65,7 @@ public class HiloTrabajador {
 				}
 				long tiempoFinal = System.nanoTime();
 				t.setDuracion(((double) (tiempoFinal - tiempoInicio)) / 1000000);
-				System.out.println("[EX - " + t.getId() + "] Seccion de proceso finalizada!");
+				//System.out.println("[EX - " + t.getId() + "] Seccion de proceso finalizada!");
 				break;
 		}
 		if (t.getEstado() == Estado.EJECUTANDO)

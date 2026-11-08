@@ -15,8 +15,21 @@ public class Main {
 	public static final int PROCESOS_ACTIVOS = 2;
 	
 	public static void main(String[] args) {
+		String archivo;
+		while (true) {
+			System.out.println("Introduce el nombre del archivo de entrada: ");
+			Scanner sc = new Scanner(System.in);
+			archivo = sc.next().trim();
+			if (Archivo.existe(archivo)) {
+				sc.close();
+				break;
+			}
+			System.out.println("El archivo no existe. Por favor, introduce el nombre de un archivo accesible.");
+			
+		}
+		
 		//crear lista con todos los trabajos validados
-		List<Trabajo> lista = ListaTrabajo.parseCsv(Archivo.leer("main.csv"));
+		List<Trabajo> lista = ListaTrabajo.parseCsv(Archivo.leer(archivo));
 		
 		BlockingQueue<Trabajo> cola = new ArrayBlockingQueue<>(TRABAJOS_PENDIENTES); //lista limitada a 20 trabajos pendientes
 		ExecutorService trabajadores = Executors.newFixedThreadPool(HILOS_TRABAJADORES); //uso de 4 hilos trabajadores
@@ -29,7 +42,7 @@ public class Main {
 		for (int i = 0; i < HILOS_TRABAJADORES; i++) {
 			trabajadores.submit(() -> {
 				try {
-					System.out.println("Hilo ejecutor iniciado.");
+					//System.out.println("Hilo ejecutor iniciado.");
 					while (true) {
 						Trabajo t = cola.take();
 						
@@ -37,9 +50,9 @@ public class Main {
 							break;
 						HiloTrabajador.ejecutar(t, trabajadores, semaphore);
 					}
-					System.out.println("Hilo ejecutor finalizado.");
+					//System.out.println("Hilo ejecutor finalizado.");
 				} catch (InterruptedException e) {
-					e.printStackTrace();
+					//e.printStackTrace();
 					Thread.currentThread().interrupt();
 				}
 			});
@@ -56,6 +69,6 @@ public class Main {
 		
 		String informe = ListaTrabajo.generarInforme(lista);
 		Archivo.escribir("informe.csv", informe);
-		System.out.println("--------Wii did it!------------");
+		System.out.println("Informe generado!");
 	}
 }

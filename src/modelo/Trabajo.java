@@ -149,7 +149,7 @@ public class Trabajo {
 			
 			String volcado = Archivo.leer(archivo);
 			if (volcado == null) {
-				salida += "error";
+				salida += "error/";
 				continue;
 			}
 			int recuento = volcado.split(texto, -1).length;
