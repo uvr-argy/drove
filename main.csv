@@ -1,0 +1,8 @@
+1;ANALIZAR_TEXTO;archivo_prueba_1.txt
+2;ANALIZAR_TEXTO;archivo_prueba_2.txt
+3;BUSCAR_TEXTO;automatización;archivo_prueba_1.txt
+4;BUSCAR_TEXTO;automatización;archivo_prueba_1.txt;archivo_prueba_2.txt
+5;ESTADISTICAS_CSV;datos_estadisticas.csv
+6;ANALIZAR_TEXTO;archivo_prueba_2.txt
+7;BUSCAR_TEXTO;prueba;archivo_prueba_1.txt;archivo_prueba_2.txt
+8;ESTADISTICAS_CSV;datos_estadisticas.csv

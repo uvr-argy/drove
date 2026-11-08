@@ -45,4 +45,15 @@ public class ListaTrabajo {
 		}
 		return false;
 	}
+	
+	public static String generarInforme(List<Trabajo> lista) {
+		String str = "";
+		
+		for (int i = 0; i < lista.size(); i++) {
+			Trabajo t = lista.get(i);
+			str += TrabajoCsvMapper.toCsv(t) + "\n";
+		}
+		
+		return str;
+	}
 }

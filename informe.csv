@@ -1,0 +1,10 @@
+1;ANALIZAR_TEXTO;COMPLETADO;lineas=4/palabras=55/caracteres=353;12.5163;archivo_prueba_1.txt;
+2;ANALIZAR_TEXTO;COMPLETADO;lineas=5/palabras=29/caracteres=240;12.5154;archivo_prueba_2.txt;
+3;BUSCAR_TEXTO;COMPLETADO;archivo_prueba_1.txt=2/;14.6523;automatización;archivo_prueba_1.txt;
+4;BUSCAR_TEXTO;COMPLETADO;archivo_prueba_1.txt=2/archivo_prueba_2.txt=4/;15.2861;automatización;archivo_prueba_1.txt;archivo_prueba_2.txt;
+5;ESTADISTICAS_CSV;COMPLETADO;recuento=12/suma=133.8/media=11.15/minimo=-5.0/maximo=45.2/descartes=20
+;170.7847;datos_estadisticas.csv;
+6;ANALIZAR_TEXTO;COMPLETADO;lineas=5/palabras=29/caracteres=240;1.2013;archivo_prueba_2.txt;
+7;BUSCAR_TEXTO;COMPLETADO;archivo_prueba_1.txt=2/archivo_prueba_2.txt=2/;5.0;prueba;archivo_prueba_1.txt;archivo_prueba_2.txt;
+8;ESTADISTICAS_CSV;COMPLETADO;recuento=12/suma=133.8/media=11.15/minimo=-5.0/maximo=45.2/descartes=20
+;165.6867;datos_estadisticas.csv;

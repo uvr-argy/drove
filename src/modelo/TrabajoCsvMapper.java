@@ -37,4 +37,21 @@ public class TrabajoCsvMapper {
 		Trabajo t = new Trabajo(id, operacion, parametros);
 		return t;
 	}
+	
+	public static String toCsv(Trabajo t) {
+		String str = "";
+		
+		str += t.getId() + ";";
+		str += t.getOperacion() + ";";
+		str += t.getEstado() + ";";
+		str += t.getResultado() + ";";
+		str += t.getDuracion() + ";";
+		
+		String[] parametros = t.getParametros();
+		for (int i = 0; i < parametros.length; i++) {
+			str += parametros[i] + ";";
+		}
+	
+		return str;
+	}
 }

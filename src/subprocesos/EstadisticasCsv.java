@@ -19,7 +19,9 @@ public class EstadisticasCsv {
 		double minimo = AnalizarDoubles.min(serializado);
 		double maximo = AnalizarDoubles.max(serializado);
 		int descartes = AnalizarDoubles.contarNoValidos(registros);
+		//return;/*
 		
 		System.out.println("recuento=" + recuento + "/suma=" + suma + "/media=" + media + "/minimo=" + minimo + "/maximo=" + maximo + "/descartes=" + descartes);
+		//*/
 	}
 }

@@ -8,7 +8,7 @@ import modelo.Trabajo.Estado;
 
 public class HiloProductor {
 	public static void ejecutar(List<Trabajo> lista, BlockingQueue<Trabajo> cola) {
-		System.out.println("Ejecutando hilo productor...");
+		//System.out.println("Ejecutando hilo productor...");
 		try {
 			for (int i = 0; i < lista.size(); i++) {
 				Trabajo t = lista.get(i);
@@ -16,7 +16,7 @@ public class HiloProductor {
 					continue;
 				cola.put(t); //espera si la cola está llena
 				t.setEstado(Trabajo.Estado.EN_COLA); //poner estado "en cola" para que los trabajadores no se detengan
-				System.out.println("Añadido a cola tarea " + t.getId());
+				//System.out.println("Añadido a cola tarea " + t.getId());
 			}
 			Trabajo dummy = new Trabajo();
 			dummy.setEstado(Estado.COMPLETADO);
@@ -24,9 +24,9 @@ public class HiloProductor {
 				cola.put(dummy);
 			}
 		} catch (InterruptedException e) {
-			System.out.println("Error :(");
+			//System.out.println("Error :(");
 			Thread.currentThread().interrupt();
 		}
-		System.out.println("Hilo productor finalizado!");
+		//System.out.println("Hilo productor finalizado!");
 	}
 }

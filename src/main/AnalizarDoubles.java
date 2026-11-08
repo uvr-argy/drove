@@ -1,21 +1,30 @@
 package main;
 
+import java.util.List;
+import java.util.ArrayList;
+
 public class AnalizarDoubles {
 	public static double[] parseDoubles(String[] str) {
-		double[] res = new double[str.length];
+		double[] res;
+		List<Double> lista = new ArrayList<Double>();
 		for (int i = 0; i < str.length; i++) {
 			try {
-				res[i] = Double.parseDouble(str[i]);
+				lista.add(Double.parseDouble(str[i]));
 			} catch (NumberFormatException e) {
-				System.err.println("El valor '" + str[i] + "' no se ha podido parsear correctamente.");
+				//System.err.println("El valor '" + str[i] + "' no se ha podido parsear correctamente.");
 			}
+		}
+		//pasar contenido a array tradicional
+		res = new double[lista.size()];
+		for (int i = 0; i < res.length; i++) {
+			res[i] = lista.get(i);
 		}
 		return res;
 	}
 	
 	public static int contarNoValidos(String[] str) {
 		int recuento = str.length;
-		recuento -= contarNoValidos(str);
+		recuento -= contarValidos(str);
 		return recuento;
 	}
 	

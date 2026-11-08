@@ -16,7 +16,7 @@ public class Main {
 	
 	public static void main(String[] args) {
 		//crear lista con todos los trabajos validados
-		List<Trabajo> lista = ListaTrabajo.parseCsv(Archivo.leer("files/150.csv"));
+		List<Trabajo> lista = ListaTrabajo.parseCsv(Archivo.leer("main.csv"));
 		
 		BlockingQueue<Trabajo> cola = new ArrayBlockingQueue<>(TRABAJOS_PENDIENTES); //lista limitada a 20 trabajos pendientes
 		ExecutorService trabajadores = Executors.newFixedThreadPool(HILOS_TRABAJADORES); //uso de 4 hilos trabajadores
@@ -47,13 +47,15 @@ public class Main {
 		try {			
 			productor.join();
 			trabajadores.shutdown();
-			if (!trabajadores.awaitTermination(2, TimeUnit.SECONDS)) {
+			if (!trabajadores.awaitTermination(5, TimeUnit.SECONDS)) {
 				trabajadores.shutdownNow();
 			}
 		} catch (InterruptedException e) {
 			
-		}		
-		System.out.println("\n--------Wii did it!------------");
-		return;
+		}
+		
+		String informe = ListaTrabajo.generarInforme(lista);
+		Archivo.escribir("informe.csv", informe);
+		System.out.println("--------Wii did it!------------");
 	}
 }

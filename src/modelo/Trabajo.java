@@ -85,14 +85,14 @@ public class Trabajo {
 	public void setDuracion(double duracion) {
 		this.duracion = duracion;
 	}
-	
+
 	//overrides
 	@Override
 	public String toString() {
 		return "Trabajo [id=" + id + ", operacion=" + operacion + ", estado=" + estado + ", resultado=" + resultado
-				+ ", parametros=" + Arrays.toString(parametros) + "]";
+				+ ", parametros=" + Arrays.toString(parametros) + ", duracion=" + duracion + "]";
 	}
-	
+
 	//ejecucion de trabajos
 	public boolean ejecutar() {
 		boolean ok = true;
@@ -121,7 +121,7 @@ public class Trabajo {
 		}
 		
 		long tiempoFinal = System.nanoTime();
-		this.setDuracion((tiempoFinal - tiempoInicio) / 1000000); //convertir a milisegundos
+		this.setDuracion(((double) (tiempoFinal - tiempoInicio)) / 1000000); //convertir a milisegundos
 		return ok;
 	}
 	
